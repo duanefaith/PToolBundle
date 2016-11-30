@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin name="SamplePlugin">
+  <time name="check"><time name="b"/></time>
 </plugin>
