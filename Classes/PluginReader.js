@@ -56,11 +56,21 @@ module.exports.loadPlugin = (name, callback) => {
 
   let pluginXMLPath = pluginFolder + '/plugin.xml';
   fs.readFile(pluginXMLPath, (err, data) => {
-    let parser = new xml2js.Parser();
+    let parser = new xml2js.Parser({explicitChildren: true, preserveChildrenOrder: true});
     parser.parseString(data, (err, result) => {
       if (result != null
-         && result.plugin != null) {
-           pluginMap[name] = result.plugin.form;
+         && result.plugin != null
+         && result.plugin['$$'] != null
+         && result.plugin['$$'].length > 0) {
+           let formList = new Array();
+           for (let i in result.plugin['$$']) {
+             let form = result.plugin['$$'][i];
+             if (form != null
+                && form['#name'] == 'form') {
+                  formList.push(form);
+             }
+           }
+           pluginMap[name] = formList;
       }
       if (callback != null) {
         callback(pluginMap[name]);

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin name="SamplePlugin">
-  <form id="form1"/>
+  <form id="form1">
+    <input id="input1" name="input1"/>
+    <label id="label1" name="label1">label1</label>
+    <input id="input2" name="input2"/>
+    <input id="input3" name="input3"/>
+  </form>
 </plugin>
