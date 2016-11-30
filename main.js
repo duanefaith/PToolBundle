@@ -9,7 +9,6 @@ const path = require('path');
 const PluginReader = require('./Classes/PluginReader.js');
 
 let mainWindow;
-let pluginReader = new PluginReader();
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({width: 800, height: 600});
@@ -43,10 +42,18 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (mainWindow === null) {
-    createWindow();
+    createMainWindow();
   }
 });
 
 ipcMain.on('plugins_reload', (event) => {
-  pluginReader.load();
+  PluginReader.reload((plugins) => {
+    event.sender.send('plugins_reload_success', plugins);
+  });
+});
+
+ipcMain.on('plugin_load_specific', (event, name) => {
+  PluginReader.loadPlugin(name, (plugin) => {
+    event.sender.send('plugin_load_specific_success', name, plugin);
+  });
 });
