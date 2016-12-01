@@ -5,5 +5,6 @@
     <label id="label1" name="label1">label1</label>
     <input id="input2" name="input2"/>
     <input id="input3" name="input3"/>
+    <submit id="submit1" name="submit1" exec="./sample.py"/>
   </form>
 </plugin>

@@ -43,21 +43,33 @@ div.ptool-inner-sub-pannel {
 }
 
 div.row.ptools-row-unit {
-  height: 35px;
+  height: 50px;
   margin: 0px;
 }
 
 div.ptools-col-unit {
   height: 100%;
   text-align: center;
+  line-height: 50px;
 }
 
 .ptools-col-inner {
-  display:block;
   height: 100%;
   width: 100%;
   text-align: center;
 }
 
 .ptools-item-label {
+}
+
+.ptools-item-input {
+  display: inline-block;
+}
+
+.ptools-item-submit {
+  width: 100%;
+}
+
+.btn:focus {
+  outline: none;
 }

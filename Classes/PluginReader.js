@@ -1,5 +1,7 @@
 const fs = require('fs');
 const xml2js = require('xml2js');
+const path = require('path');
+const child_process = require('child_process');
 
 let pluginFolders = new Object();
 let pluginMap = new Object();
@@ -40,6 +42,7 @@ module.exports.loadPlugin = (name, callback) => {
     }
     return;
   }
+
   let pluginFolder = pluginFolders[name];
   if (pluginFolder == null || !fs.existsSync(pluginFolder)) {
     if (callback != null) {
@@ -47,6 +50,7 @@ module.exports.loadPlugin = (name, callback) => {
     }
     return;
   }
+
   if (pluginMap.hasOwnProperty(name)) {
     if (callback != null) {
       callback(pluginMap[name]);
@@ -76,5 +80,35 @@ module.exports.loadPlugin = (name, callback) => {
         callback(pluginMap[name]);
       }
     });
+  });
+};
+
+module.exports.exec = (name, exec, params, callback) => {
+  if (name == null) {
+    if (callback != null) {
+      callback(null);
+    }
+    return;
+  }
+
+  let pluginFolder = pluginFolders[name];
+  if (pluginFolder == null || !fs.existsSync(pluginFolder)) {
+    if (callback != null) {
+      callback(null);
+    }
+    return;
+  }
+
+  let execPath = path.join(pluginFolder, exec);
+  if (!fs.existsSync(pluginFolder)) {
+    if (callback != null) {
+      callback(null);
+    }
+    return;
+  }
+
+  child_process.exec('python ./Scripts/executor.py ' + execPath + ' \'' + JSON.stringify(params) + '\''
+  , (error, stdout, stderr) => {
+    console.log(error + ' ' + stdout + ' ' + stderr);
   });
 };

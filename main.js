@@ -52,8 +52,12 @@ ipcMain.on('plugins_reload', (event) => {
   });
 });
 
-ipcMain.on('plugin_load_specific', (event, name) => {
-  PluginReader.loadPlugin(name, (plugin) => {
-    event.sender.send('plugin_load_specific_success', name, plugin);
+ipcMain.on('plugin_load_specific', (event, pluginName) => {
+  PluginReader.loadPlugin(pluginName, (plugin) => {
+    event.sender.send('plugin_load_specific_success', pluginName, plugin);
   });
+});
+
+ipcMain.on('plugin_exec', (event, pluginName, exec, params) => {
+  PluginReader.exec(pluginName, exec, params);
 });

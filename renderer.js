@@ -45,7 +45,9 @@ ipcRenderer.on('plugin_load_specific_success', (event, name, plugin) => {
        $formOuterDiv.css('height', heightPercent + '%');
        $formOuterDiv.append('<div class="panel panel-default ptool-inner-sub-pannel" id="' + formInnerId + '"></div>');
 
-       let htmlAppender = new HtmlAppender($formOuterDiv.find('div#' + formInnerId));
+       let htmlAppender = new HtmlAppender($formOuterDiv.find('div#' + formInnerId), (exec, params) => {
+         ipcRenderer.send('plugin_exec', name, exec, params);
+       });
        htmlAppender.appendData(form);
      }
   }
