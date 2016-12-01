@@ -107,8 +107,19 @@ module.exports.exec = (name, exec, params, callback) => {
     return;
   }
 
-  child_process.exec('python ./Scripts/executor.py ' + execPath + ' \'' + JSON.stringify(params) + '\''
-  , (error, stdout, stderr) => {
-    console.log(error + ' ' + stdout + ' ' + stderr);
+  let pyProcess = child_process.spawn('python', ['./Scripts/executor.py', execPath, JSON.stringify(params)], {});
+
+  if (pyProcess.stdout != null) {
+    pyProcess.stdout.on('data', (data) => {
+      console.log('stdout: ' + data);
+    })
+  }
+  if (pyProcess.stderr != null) {
+    pyProcess.stderr.on('data', (data) => {
+      console.log('stderr: ' + data);
+    })
+  }
+  pyProcess.on('exit', (code) => {
+    console.log('exit code: ' + code);
   });
 };

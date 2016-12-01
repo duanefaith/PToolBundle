@@ -16,10 +16,15 @@ def main():
         return
 
     execArgs = args[2]
+    print execArgs
     jsonData = json.loads(execArgs)
 
-    worker = imp.load_source('module.name', execPath)
-    worker.work(jsonData)
+    # worker = imp.load_source('module_name', execPath)
+    # worker.work(jsonData)
+    import time
+    for i in range(0, 100):
+        print jsonData['input1'] + ' ' + jsonData['input2']
+        time.sleep(1)
 
 if __name__ == "__main__":
     main()
