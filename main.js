@@ -11,7 +11,7 @@ const PluginReader = require('./Classes/PluginReader.js');
 let mainWindow;
 
 function createMainWindow() {
-  mainWindow = new BrowserWindow({width: 800, height: 600});
+  mainWindow = new BrowserWindow({width: 1280, height: 800});
 
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),

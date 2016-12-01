@@ -3,7 +3,7 @@ const TYPE_INPUT = 'input';
 
 const MAX_COL_SPAN_PER_ROW = 12;
 const COL_SPAN_WIDTH_TABLE = {
-  label: 1,
+  label: 2,
   input: 2,
 };
 
@@ -45,7 +45,7 @@ function checkAndAddRow(type) {
 
 function createWrapperDiv($div, type) {
   if ($div != null) {
-    $div.append('<div class="ptools-col-unit col-md-'
+    $div.append('<div class="ptools-col-unit col-xs-'
      + COL_SPAN_WIDTH_TABLE[type] + '" data-type="' + type + '"></div>');
     return $div.find('div.ptools-col-unit[data-type="' + type + '"]').last();
   }
@@ -64,15 +64,29 @@ function jointLabel($div, ele) {
        let nameSpan = '';
        let name = ele['$'].name;
        if (name != null && name.length > 0) {
-         nameSpan = '<span>' + name + ': </span>';
+         nameSpan = '<p>' + name + ': </p>';
        }
-       $div.append(nameSpan + '<span class="ptools-item-label" id="' + formId + '_' + ele['$'].id + '">' + content + '</span>');
+       $div.append('<span class="ptools-col-inner">' + nameSpan
+        + '<p class="ptools-item-label" id="' + formId + '_' + ele['$'].id + '">' + content + '</p></span>');
   }
 }
 
 function jointInput($div, ele) {
-  if ($div != null) {
-
+  if ($div != null
+     && ele != null
+     && ele['$'] != null
+     && ele['$'].id != null) {
+      let content = ele['_']
+      if (content == null) {
+        content = '';
+      }
+      let nameSpan = '';
+      let name = ele['$'].name;
+      if (name != null && name.length > 0) {
+        nameSpan = ' placeholder="' + name + '"';
+      }
+      let inputId = formId + '_' + ele['$'].id;
+      $div.append('<div class="form-group"><input type="text" class="form-control" id="' + inputId + '"' + nameSpan + '></div>');
   }
 }
 
