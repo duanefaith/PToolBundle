@@ -19,12 +19,8 @@ def main():
     print execArgs
     jsonData = json.loads(execArgs)
 
-    # worker = imp.load_source('module_name', execPath)
-    # worker.work(jsonData)
-    import time
-    for i in range(0, 100):
-        print jsonData['input1'] + ' ' + jsonData['input2']
-        time.sleep(1)
+    worker = imp.load_source('ptool_executor_loaded_module', execPath)
+    worker.work(jsonData)
 
 if __name__ == "__main__":
     main()

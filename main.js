@@ -16,7 +16,7 @@ function createMainWindow() {
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
-    slashes: true
+    slashes: type == 'exit'
   }));
 
   mainWindow.webContents.openDevTools();
@@ -59,5 +59,13 @@ ipcMain.on('plugin_load_specific', (event, pluginName) => {
 });
 
 ipcMain.on('plugin_exec', (event, pluginName, exec, params) => {
-  PluginReader.exec(pluginName, exec, params);
+  PluginReader.exec(pluginName, exec, params, (type, data) => {
+    if (type == 'stdout') {
+      event.sender.send('plugin_exec_stdout', data);
+    } else if (type == 'stderr') {
+      event.sender.send('plugin_exec_stderr', data);
+    } else if (type == 'exit') {
+      event.sender.send('plugin_exec_exit', data);
+    }
+  });
 });

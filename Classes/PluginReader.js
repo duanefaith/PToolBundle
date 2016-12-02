@@ -111,15 +111,21 @@ module.exports.exec = (name, exec, params, callback) => {
 
   if (pyProcess.stdout != null) {
     pyProcess.stdout.on('data', (data) => {
-      console.log('stdout: ' + data);
+      if (callback != null) {
+        callback('stdout', data);
+      }
     })
   }
   if (pyProcess.stderr != null) {
     pyProcess.stderr.on('data', (data) => {
-      console.log('stderr: ' + data);
+      if (callback != null) {
+        callback('stderr', data);
+      }
     })
   }
-  pyProcess.on('exit', (code) => {
-    console.log('exit code: ' + code);
+  pyProcess.on('exit', (data) => {
+    if (callback != null) {
+      callback('exit', data);
+    }
   });
 };
