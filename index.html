@@ -23,7 +23,14 @@
       <div class="panel panel-default ptool-inner-parent-pannel col-xs-8" id="ptool_main_container">
       </div>
       <div class="ptool-inner-parent-pannel col-xs-4">
-        <div class="panel panel-default ptool-inner-parent-pannel" id="ptool_console_container">
+        <div class="ptool-console-btn-panel">
+          <div class="btn-group ptool-console-btn-group">
+            <button type="button" class="btn btn-default" id="ptool_console_btn_trash"><span class="glyphicon glyphicon-trash"></span></button>
+            <button type="button" class="btn btn-default" id="ptool_console_btn_stop" disabled="disabled"><span class="glyphicon glyphicon-stop"></span></button>
+          </div>
+        </div>
+        <div class="panel panel-default" id="ptool_console_container">
+          <ul class="ptool-console-ul list-group" id="ptool_console_list"></ul>
         </div>
       </div>
     </div>

@@ -159,7 +159,6 @@ function joinSubmit($div, ele) {
 /* private functions */
 
 HtmlAppender.prototype.appendData = (formData) => {
-  console.log(formData);
   if ($localForm == null) {
     return;
   }

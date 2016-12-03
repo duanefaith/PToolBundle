@@ -16,7 +16,6 @@ def main():
         return
 
     execArgs = args[2]
-    print execArgs
     jsonData = json.loads(execArgs)
 
     worker = imp.load_source('ptool_executor_loaded_module', execPath)

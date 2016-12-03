@@ -16,7 +16,7 @@ function createMainWindow() {
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
-    slashes: type == 'exit'
+    slashes: true
   }));
 
   mainWindow.webContents.openDevTools();
@@ -26,11 +26,9 @@ function createMainWindow() {
   });
 }
 
-function appReady() {
+app.on('ready', () => {
   createMainWindow();
-}
-
-app.on('ready', appReady);
+});
 
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
@@ -41,9 +39,17 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  if (mainWindow === null) {
+  if (mainWindow == null) {
     createMainWindow();
   }
+});
+
+ipcMain.on('window_before_unload', (event) => {
+  PluginReader.exit();
+});
+
+ipcMain.on('plugins_exec_stop_all', (event) => {
+  PluginReader.exit();
 });
 
 ipcMain.on('plugins_reload', (event) => {
@@ -59,13 +65,13 @@ ipcMain.on('plugin_load_specific', (event, pluginName) => {
 });
 
 ipcMain.on('plugin_exec', (event, pluginName, exec, params) => {
-  PluginReader.exec(pluginName, exec, params, (type, data) => {
+  PluginReader.exec(pluginName, exec, params, (type, data, remainingCount) => {
     if (type == 'stdout') {
-      event.sender.send('plugin_exec_stdout', data);
+      event.sender.send('plugin_exec_stdout', data, remainingCount);
     } else if (type == 'stderr') {
-      event.sender.send('plugin_exec_stderr', data);
+      event.sender.send('plugin_exec_stderr', data, remainingCount);
     } else if (type == 'exit') {
-      event.sender.send('plugin_exec_exit', data);
+      event.sender.send('plugin_exec_exit', data, remainingCount);
     }
   });
 });

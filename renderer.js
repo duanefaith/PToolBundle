@@ -3,6 +3,23 @@ const ipcRenderer = electron.ipcRenderer;
 
 const HtmlAppender = require('./Classes/HtmlAppender.js');
 
+let $consoleUl;
+
+$(window).on('beforeunload', () => {
+  ipcRenderer.send('window_before_unload');
+});
+
+$('button#ptool_console_btn_trash').click(() => {
+  if ($consoleUl == null) {
+    $consoleUl = $('div#ptool_console_container ul#ptool_console_list').first();
+  }
+  $consoleUl.empty();
+});
+
+$('button#ptool_console_btn_stop').click(() => {
+  ipcRenderer.send('plugins_exec_stop_all');
+});
+
 ipcRenderer.on('plugins_reload_success', (event, plugins) => {
   let pluginList = Object.keys(plugins);
   let $dropdownList = $("ul#ptool_tools_dropdown_list");
@@ -47,9 +64,34 @@ ipcRenderer.on('plugin_load_specific_success', (event, name, plugin) => {
 
        let htmlAppender = new HtmlAppender($formOuterDiv.find('div#' + formInnerId), (exec, params) => {
          ipcRenderer.send('plugin_exec', name, exec, params);
+         $('button#ptool_console_btn_stop').removeAttr('disabled');
        });
        htmlAppender.appendData(form);
      }
+  }
+});
+
+ipcRenderer.on('plugin_exec_stdout', (event, data, remainingCount) => {
+  if ($consoleUl == null) {
+    $consoleUl = $('div#ptool_console_container ul#ptool_console_list').first();
+  }
+  $consoleUl.append('<li class="list-group-item list-group-item-info ptool_console_item">' + data + '</li>');
+});
+
+ipcRenderer.on('plugin_exec_stderr', (event, data, remainingCount) => {
+  if ($consoleUl == null) {
+    $consoleUl = $('div#ptool_console_container ul#ptool_console_list').first();
+  }
+  $consoleUl.append('<li class="list-group-item list-group-item-danger ptool_console_item">' + data + '</li>');
+});
+
+ipcRenderer.on('plugin_exec_exit', (event, data, remainingCount) => {
+  if ($consoleUl == null) {
+    $consoleUl = $('div#ptool_console_container ul#ptool_console_list').first();
+  }
+  $consoleUl.append('<li class="list-group-item list-group-item-warning ptool_console_item">exit code ' + data + '</li>');
+  if (remainingCount == 0) {
+    $('button#ptool_console_btn_stop').attr('disabled', 'disabled');
   }
 });
 

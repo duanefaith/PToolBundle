@@ -5,6 +5,15 @@ const child_process = require('child_process');
 
 let pluginFolders = new Object();
 let pluginMap = new Object();
+let pluginRuningProcesses = new Array();
+
+module.exports.exit = () => {
+  for (let process of pluginRuningProcesses) {
+    if (process != null) {
+      process.kill('SIGKILL');
+    }
+  }
+};
 
 module.exports.reload = (callback) => {
   pluginFolders = new Object();
@@ -108,24 +117,30 @@ module.exports.exec = (name, exec, params, callback) => {
   }
 
   let pyProcess = child_process.spawn('python', ['./Scripts/executor.py', execPath, JSON.stringify(params)], {});
+  pluginRuningProcesses.push(pyProcess);
 
   if (pyProcess.stdout != null) {
     pyProcess.stdout.on('data', (data) => {
       if (callback != null) {
-        callback('stdout', data);
+        callback('stdout', data, pluginRuningProcesses.length);
       }
     })
   }
   if (pyProcess.stderr != null) {
     pyProcess.stderr.on('data', (data) => {
       if (callback != null) {
-        callback('stderr', data);
+        callback('stderr', data, pluginRuningProcesses.length);
       }
     })
   }
   pyProcess.on('exit', (data) => {
+    let index = pluginRuningProcesses.indexOf(pyProcess);
+    if (index > -1) {
+      pluginRuningProcesses.splice(index, 1);
+    }
+
     if (callback != null) {
-      callback('exit', data);
+      callback('exit', data, pluginRuningProcesses.length);
     }
   });
 };
