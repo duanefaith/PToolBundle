@@ -5,11 +5,10 @@
     <title>PToolBundle</title>
 
     <!-- 新 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="./Assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./Assets/main/css/index.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/index.css">
   </head>
   <body>
-
     <div class="btn-group" id="ptool_tools_dropdown">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         <span id="ptool_tools_dropdown_title"></span>
@@ -38,13 +37,13 @@
 
   <!-- scripts -->
   <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-  <script>window.$ = window.jQuery = require('./Assets/jquery/jquery-3.1.1.min.js');</script>
+  <script>window.$ = window.jQuery = require('../node_modules/jquery/dist/jquery.min');</script>
 
   <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-  <script src="./Assets/bootstrap/js/bootstrap.min.js"></script>
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
   <script>
-    require('./renderer.js');
+    require('../src/renderer.js');
   </script>
   <!-- scripts -->
 

@@ -6,7 +6,7 @@ const ipcMain = electron.ipcMain;
 const url = require('url');
 const path = require('path');
 
-const PluginReader = require('./Classes/PluginReader.js');
+const PluginReader = require('./plugin-reader.js');
 
 let mainWindow;
 
@@ -14,7 +14,7 @@ function createMainWindow() {
   mainWindow = new BrowserWindow({width: 1280, height: 800});
 
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
+    pathname: path.join(__dirname, '../app/index.html'),
     protocol: 'file:',
     slashes: true
   }));

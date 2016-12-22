@@ -1,7 +1,7 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
-const HtmlAppender = require('./Classes/HtmlAppender.js');
+const HtmlAppender = require('./html-appender.js');
 
 let $consoleUl;
 
