@@ -116,7 +116,7 @@ module.exports.exec = (name, exec, params, callback) => {
     return;
   }
 
-  let pyProcess = child_process.spawn('python', ['./Scripts/executor.py', execPath, JSON.stringify(params)], {});
+  let pyProcess = child_process.spawn('python', ['./scripts/executor.py', execPath, JSON.stringify(params)], {});
   pluginRuningProcesses.push(pyProcess);
 
   if (pyProcess.stdout != null) {
